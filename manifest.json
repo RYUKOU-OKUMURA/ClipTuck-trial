@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ClipTuck 体験版",
-  "short_name": "ClipTuck Trial",
+  "short_name": "ClipTuck体験版",
   "version": "1.0.0-trial-locked",
   "description": "気になったら、ひとまずタック。後で読むを最短に。",
   "icons": [

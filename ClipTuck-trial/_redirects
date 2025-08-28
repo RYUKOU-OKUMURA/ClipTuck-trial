@@ -1,0 +1,23 @@
+# Cloudflare Pages用リダイレクト設定
+
+# ルートアクセス時は選択ページを表示（既に存在するindex.htmlがあるため不要だが、明示的に設定）
+/ /index.html 200
+
+# 体験版へのリダイレクト
+/trial /trial/ 301
+/trial/index /trial/index.html 200
+
+# 完全版へのリダイレクト
+/full /full/ 301
+/full/index /full/index.html 200
+
+# SPA対応（各バージョン内でのクライアントサイドルーティング）
+/trial/* /trial/index.html 200
+/full/* /full/index.html 200
+
+# 古いパス（もしあれば）からの移行
+/app/* /full/:splat 301
+/demo/* /trial/:splat 301
+
+# 404ページ（オプション - 必要に応じて作成）
+/* /index.html 404

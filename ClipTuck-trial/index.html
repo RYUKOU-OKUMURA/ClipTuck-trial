@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClipTuck - 気になったら、ひとまずタック</title>
+    <link rel="icon" href="shared/icons/appicon_16.png" sizes="16x16">
+    <link rel="icon" href="shared/icons/appicon_32.png" sizes="32x32">
+    <link rel="icon" href="shared/icons/appicon_48.png" sizes="48x48">
+    <link rel="icon" href="shared/icons/appicon_192.png" sizes="192x192">
+    <link rel="icon" href="shared/icons/appicon_512.png" sizes="512x512">
+    <link rel="apple-touch-icon" href="shared/icons/appicon_180.png">
+    <meta name="theme-color" content="#EF4444">
+    <meta property="og:title" content="ClipTuck">
+    <meta property="og:description" content="気になったら、ひとまずタック。後で読むを最短に。">
+    <meta property="og:image" content="shared/icons/appicon_512.png">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,400&family=Fredoka+One:wght@400&family=Klee+One:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 2.5rem;
+        }
+
+        .version-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .version-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem 1.5rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .version-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .version-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .version-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .trial-card {
+            border-left: 4px solid #F59E0B;
+        }
+
+        .full-card {
+            border-left: 4px solid #10B981;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .card-description {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .card-features {
+            list-style: none;
+            text-align: left;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        .card-features li {
+            margin-bottom: 0.3rem;
+            position: relative;
+            padding-left: 1rem;
+        }
+
+        .card-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #10B981;
+            font-weight: bold;
+        }
+
+        .trial-card .card-features li::before {
+            color: #F59E0B;
+        }
+
+        .description {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 2rem 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .version-cards {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .version-card {
+                padding: 1.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">📚</div>
+        <h1>ClipTuck</h1>
+        <p class="subtitle">気になったら、ひとまずタック</p>
+        
+        <div class="version-cards">
+            <a href="trial/" class="version-card trial-card">
+                <div class="card-icon">🧪</div>
+                <h3 class="card-title">体験版</h3>
+                <p class="card-description">機能を試してみたい方におすすめ</p>
+                <ul class="card-features">
+                    <li>最大50件のブックマーク</li>
+                    <li>基本機能をすべて体験</li>
+                    <li>すぐに始められる</li>
+                    <li>アカウント登録不要</li>
+                </ul>
+            </a>
+            
+            <a href="full/" class="version-card full-card">
+                <div class="card-icon">🚀</div>
+                <h3 class="card-title">完全版</h3>
+                <p class="card-description">本格的に利用したい方向け</p>
+                <ul class="card-features">
+                    <li>ほぼ無制限（999,999件）</li>
+                    <li>継続的なアップデート</li>
+                    <li>新機能の優先提供</li>
+                    <li>フルパフォーマンス</li>
+                </ul>
+            </a>
+        </div>
+        
+        <div class="description">
+            <p><strong>ClipTuck</strong>は、シンプルで使いやすい「後で読む」アプリです。URLを保存してタグで整理、検索やフィルタリングで効率的に管理できます。ブックマークレット機能により、どのサイトからでもワンクリックで保存可能です。</p>
+        </div>
+    </div>
+</body>
+</html>

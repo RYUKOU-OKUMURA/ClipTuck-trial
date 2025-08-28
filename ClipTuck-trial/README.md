@@ -1,22 +1,14 @@
-# ClipTuck
+# ClipTuck 体験版
 
-シンプルな「後で読む」アプリケーション。ローカルストレージベースで動作します。
+シンプルな「後で読む」アプリケーション体験版。ローカルストレージベースで動作します。
 
-## バージョン構成
+## 体験版について
 
-ClipTuckは2つのバージョンを提供しています：
+このリポジトリはClipTuckの体験版専用です：
 
-### 📝 体験版（trial/）
 - **制限**: 最大50件のブックマーク
-- **状態**: 固定版（今後変更されません）
+- **状態**: 静的サイト（サーバー不要）
 - **対象**: 機能を試したいユーザー
-- **アクセス**: `/trial/index.html`
-
-### 🚀 完全版（full/）
-- **制限**: ほぼ無制限（999,999件）
-- **状態**: 継続的にアップデート
-- **対象**: 本格的に利用するユーザー
-- **アクセス**: `/full/index.html`
 
 ## 機能
 
@@ -29,23 +21,25 @@ ClipTuckは2つのバージョンを提供しています：
 
 ## 起動方法
 
-### pm2で静的配信（推奨）
+### ブラウザで直接開く（推奨）
+
+```bash
+# index.htmlをブラウザで直接開く
+open index.html
+```
+
+### pm2で静的配信
 
 ```bash
 # プロジェクトディレクトリで実行
 pm2 serve . 3000
-# SPA の場合は以下を使用
-# pm2 serve . 3000 --spa
 ```
 
-ブラウザで以下のURLにアクセスしてください：
-- 体験版: `http://localhost:3000/trial/`
-- 完全版: `http://localhost:3000/full/`
+ブラウザで `http://localhost:3000/` にアクセス
 
 ## デプロイ
 
-- Cloudflare Pages で Trial/Full を別プロジェクトとして公開する手順は `DEPLOYMENT_TWO_PROJECTS.md` を参照してください。
-- 1プロジェクトで両方を提供する場合は従来の `DEPLOYMENT.md` を参照してください。
+GitHub Pages / Netlify / Vercel（静的モード）などの静的サイトホスティングサービスで簡単にデプロイできます。
 
 ## 使用方法
 
@@ -58,28 +52,23 @@ pm2 serve . 3000
 ## ファイル構成
 
 ```
-ClipTuck/
-├── trial/              # 体験版（固定版）
-│   ├── index.html     # 体験版HTML
-│   ├── app.js         # 体験版ロジック（50件制限）
-│   ├── style.css      # 体験版スタイル
-│   └── manifest.json  # 体験版PWA設定
-├── full/               # 完全版（アップデート版）
-│   ├── index.html     # 完全版HTML
-│   ├── app.js         # 完全版ロジック（無制限）
-│   ├── style.css      # 完全版スタイル
-│   └── manifest.json  # 完全版PWA設定
-├── shared/             # 共通リソース
-│   └── icons/         # アプリアイコン
-├── README.md           # このファイル
-└── VERSION_POLICY.md   # バージョン管理ポリシー
+ClipTuck-trial/
+├── index.html          # メイン画面
+├── style.css          # スタイル
+├── app.js             # ロジック（50件制限）
+├── manifest.json      # PWA設定
+├── icons/             # アプリアイコン
+├── README.md          # このファイル
+├── AGENT.md          # エージェント仕様
+└── ecosystem.config.cjs # 運用補助
 ```
 
 ## 技術仕様
 
 - **フロントエンド**: バニラJavaScript
 - **データ保存**: localStorage
-- **サーバー**: pm2 serve（静的ファイル配信のみ）
+- **構成**: 完全な静的サイト（サーバー不要）
+- **PWA対応**: オフライン動作可能
 - **レスポンシブ**: モバイル対応
 
 ## ライセンス

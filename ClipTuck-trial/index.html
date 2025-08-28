@@ -2,235 +2,206 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ClipTuck - 気になったら、ひとまずタック</title>
-    <link rel="icon" href="shared/icons/appicon_16.png" sizes="16x16">
-    <link rel="icon" href="shared/icons/appicon_32.png" sizes="32x32">
-    <link rel="icon" href="shared/icons/appicon_48.png" sizes="48x48">
-    <link rel="icon" href="shared/icons/appicon_192.png" sizes="192x192">
-    <link rel="icon" href="shared/icons/appicon_512.png" sizes="512x512">
-    <link rel="apple-touch-icon" href="shared/icons/appicon_180.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ClipTuck 体験版 - 気になったら、ひとまずタック</title>
+    <link rel="icon" href="icons/appicon_16.png" sizes="16x16">
+    <link rel="icon" href="icons/appicon_32.png" sizes="32x32">
+    <link rel="icon" href="icons/appicon_48.png" sizes="48x48">
+    <link rel="icon" href="icons/appicon_192.png" sizes="192x192">
+    <link rel="icon" href="icons/appicon_512.png" sizes="512x512">
+    <link rel="apple-touch-icon" href="icons/appicon_180.png">
+    <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#EF4444">
     <meta property="og:title" content="ClipTuck">
     <meta property="og:description" content="気になったら、ひとまずタック。後で読むを最短に。">
-    <meta property="og:image" content="shared/icons/appicon_512.png">
     <meta property="og:type" content="website">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,400&family=Fredoka+One:wght@400&family=Klee+One:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #333;
-        }
-
-        .container {
-            max-width: 600px;
-            width: 90%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 3rem 2rem;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .logo {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 1.5rem;
-            background: linear-gradient(135deg, #EF4444, #DC2626);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: white;
-            font-weight: bold;
-        }
-
-        h1 {
-            font-family: 'Fredoka One', cursive;
-            font-size: 2.5rem;
-            color: #333;
-            margin-bottom: 0.5rem;
-        }
-
-        .subtitle {
-            font-size: 1.1rem;
-            color: #666;
-            margin-bottom: 2.5rem;
-        }
-
-        .version-cards {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .version-card {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem 1.5rem;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .version-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-
-        .version-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-            border-color: #667eea;
-        }
-
-        .version-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .trial-card {
-            border-left: 4px solid #F59E0B;
-        }
-
-        .full-card {
-            border-left: 4px solid #10B981;
-        }
-
-        .card-icon {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .card-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: #333;
-        }
-
-        .card-description {
-            font-size: 0.9rem;
-            color: #666;
-            line-height: 1.5;
-            margin-bottom: 1rem;
-        }
-
-        .card-features {
-            list-style: none;
-            text-align: left;
-            font-size: 0.85rem;
-            color: #555;
-        }
-
-        .card-features li {
-            margin-bottom: 0.3rem;
-            position: relative;
-            padding-left: 1rem;
-        }
-
-        .card-features li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: #10B981;
-            font-weight: bold;
-        }
-
-        .trial-card .card-features li::before {
-            color: #F59E0B;
-        }
-
-        .description {
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: #555;
-        }
-
-        @media (max-width: 640px) {
-            .container {
-                padding: 2rem 1.5rem;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .version-cards {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-            
-            .version-card {
-                padding: 1.5rem 1rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <div class="logo">📚</div>
-        <h1>ClipTuck</h1>
-        <p class="subtitle">気になったら、ひとまずタック</p>
-        
-        <div class="version-cards">
-            <a href="trial/" class="version-card trial-card">
-                <div class="card-icon">🧪</div>
-                <h3 class="card-title">体験版</h3>
-                <p class="card-description">機能を試してみたい方におすすめ</p>
-                <ul class="card-features">
-                    <li>最大50件のブックマーク</li>
-                    <li>基本機能をすべて体験</li>
-                    <li>すぐに始められる</li>
-                    <li>アカウント登録不要</li>
-                </ul>
-            </a>
-            
-            <a href="full/" class="version-card full-card">
-                <div class="card-icon">🚀</div>
-                <h3 class="card-title">完全版</h3>
-                <p class="card-description">本格的に利用したい方向け</p>
-                <ul class="card-features">
-                    <li>ほぼ無制限（999,999件）</li>
-                    <li>継続的なアップデート</li>
-                    <li>新機能の優先提供</li>
-                    <li>フルパフォーマンス</li>
-                </ul>
-            </a>
+        <header class="header">
+            <div class="header-grid">
+                <div class="header-left">
+                    <p class="subtitle">自分だけの本棚</p>
+                </div>
+                <div class="header-center">
+                    <h1>ClipTuck</h1>
+                </div>
+                <div class="header-right">
+                    <button onclick="toggleBookmarklet()" class="handmade-badge" data-tooltip="ワンクリックでページを保存するブックマークレットを取得">🔨 ワンクリックで本棚へ</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="bookmarklet-section" id="bookmarkletSection" style="display: none;">
+            <h3>📚 ワンクリックで本棚へ</h3>
+            <p>以下のボタンをブラウザのブックマークバーにドラッグして、任意のページで実行してください：</p>
+            <div class="bookmarklet-container">
+                <a href="javascript:void(0)" id="bookmarkletLink" class="btn-primary">本棚に保存</a>
+                <a href="javascript:void(0)" id="popupBookmarkletLink" class="btn-primary">タグ・説明付きで本棚に保存</a>
+            </div>
+            <button class="close-btn" onclick="toggleBookmarklet()">×</button>
         </div>
-        
-        <div class="description">
-            <p><strong>ClipTuck</strong>は、シンプルで使いやすい「後で読む」アプリです。URLを保存してタグで整理、検索やフィルタリングで効率的に管理できます。ブックマークレット機能により、どのサイトからでもワンクリックで保存可能です。</p>
+
+        <div class="controls">
+            <div class="add-form">
+                <div class="form-inputs">
+                    <input type="url" id="urlInput" placeholder="URLを入力..." required>
+                    <input type="text" id="titleInput" placeholder="タイトル（自動取得）">
+                    <input type="text" id="tagsInput" placeholder="タグ（カンマ区切り）">
+                    <textarea id="descriptionInput" placeholder="説明・備考（任意）" rows="2"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button onclick="addBookmark()" class="primary-btn">保存</button>
+                    <button onclick="exportData()" class="smart-btn" data-tooltip="すべてのデータをJSONファイルでバックアップ">エクスポート</button>
+                    <label class="smart-btn file-label" data-tooltip="JSONファイルから既存データに追加（上書きなし）">
+                        インポート
+                        <input type="file" id="importFile" accept=".json" onchange="importData()" hidden>
+                    </label>
+                </div>
+            </div>
+
+            <div class="filters">
+                <input type="text" id="searchInput" placeholder="検索..." oninput="filterBookmarks()">
+                <select id="tagFilter" onchange="filterBookmarks()">
+                    <option value="">すべてのタグ</option>
+                </select>
+                <select id="domainFilter" onchange="filterBookmarks()">
+                    <option value="">すべてのドメイン</option>
+                </select>
+                <select id="dateFilter" onchange="filterBookmarks()">
+                    <option value="">すべての期間</option>
+                    <option value="today">今日</option>
+                    <option value="week">今週</option>
+                    <option value="month">今月</option>
+                    <option value="custom">期間指定</option>
+                </select>
+                <div id="customDateRange" class="custom-date-range" style="display: none;">
+                    <input type="date" id="startDate" onchange="filterBookmarks()">
+                    <span>〜</span>
+                    <input type="date" id="endDate" onchange="filterBookmarks()">
+                </div>
+                <div class="view-and-group-toggle">
+                    <div class="view-toggle">
+                        <label>
+                            <input type="radio" name="view" value="active" checked onchange="switchView()">
+                            アクティブ
+                        </label>
+                        <label>
+                            <input type="radio" name="view" value="archived" onchange="switchView()">
+                            アーカイブ
+                        </label>
+                    </div>
+                    <div class="group-toggle">
+                        <label>
+                            <input type="checkbox" id="groupByDomain" onchange="renderBookmarks()">
+                            ドメイン別グループ表示
+                        </label>
+                        <label>
+                            <input type="checkbox" id="groupByDate" onchange="renderBookmarks()">
+                            日付別グループ表示
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-controls">
+                <!-- 選択・削除ボタン群（横並び統一サイズ） -->
+                <div class="selection-controls">
+                    <button onclick="selectAllGallery()" id="selectAllBtn" class="smart-btn select-btn" data-tooltip="表示中のすべてのブックマークを選択">全選択</button>
+                    <button onclick="deselectAllGallery()" id="deselectAllBtn" class="smart-btn deselect-btn" data-tooltip="すべての選択を解除">全解除</button>
+                    <button onclick="deleteSelectedBookmarks()" id="deleteSelectedBtn" class="smart-btn danger-btn" style="display: none;" data-tooltip="選択したブックマークを削除（元に戻せません）">選択削除</button>
+                    <button onclick="deleteAllBookmarks()" class="smart-btn danger-btn" data-tooltip="すべてのブックマークを削除（元に戻せません）">全て削除</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="bookmarks-list" id="bookmarksList"></div>
+
+        <div class="status" id="status"></div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <!-- フローティングヘルプボタン -->
+    <button onclick="showHelpModal()" class="floating-help-btn" data-tooltip="使い方・機能説明を表示">❓</button>
+
+    <!-- ヘルプモーダル -->
+    <div class="modal" id="helpModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>❓ ClipTuck の使い方</h3>
+                <button class="close-btn" onclick="closeHelpModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="help-content">
+                    <h4>📚 基本的な使い方</h4>
+                    <ul>
+                        <li><strong>ブックマーク保存:</strong> URL、タイトル、タグ、説明を入力して「保存」をクリック</li>
+                        <li><strong>検索:</strong> 検索欄にキーワードを入力してリアルタイム検索</li>
+                        <li><strong>フィルタ:</strong> タグ、ドメイン、期間でブックマークを絞り込み</li>
+                        <li><strong>アーカイブ:</strong> 📁ボタンでアーカイブ、📂ボタンでアンアーカイブ</li>
+                    </ul>
+                    
+                    <h4>🔖 ブックマークレット</h4>
+                    <p>「ブックマークレット」ボタンをクリックして表示されるボタンをブラウザのブックマークバーにドラッグ。任意のページで実行すると自動的にClipTuckに保存されます。</p>
+                    
+                    <h4>⚡ キーボードショートカット</h4>
+                    <ul>
+                        <li><kbd>Ctrl+S</kbd> / <kbd>Cmd+S</kbd>: ブックマーク保存</li>
+                        <li><kbd>Esc</kbd>: モーダル・ブックマークレット画面を閉じる</li>
+                    </ul>
+                    
+                    <h4>📊 データ管理</h4>
+                    <ul>
+                        <li><strong>エクスポート:</strong> すべてのデータをJSONファイルでバックアップ</li>
+                        <li><strong>インポート:</strong> JSONファイルから既存データに追加（重複は上書きされません）</li>
+                        <li><strong>グループ表示:</strong> ドメイン別・日付別でブックマークを整理</li>
+                        <li><strong>⚠️ 体験版制限:</strong> ブックマーク保存は最大50件まで（完全版はほぼ無制限）</li>
+                    </ul>
+                    
+                    <h4>🎯 選択機能</h4>
+                    <p>チェックボックスで複数のブックマークを選択し、一括削除が可能です。「全選択」「全解除」ボタンで効率的に操作できます。</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeHelpModal()">閉じる</button>
+            </div>
         </div>
     </div>
+
+    <!-- 編集モーダル -->
+    <div class="modal" id="editModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>ブックマークを編集</h3>
+                <button class="close-btn" onclick="closeEditModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="edit-form">
+                    <label for="editUrlInput">URL:</label>
+                    <input type="url" id="editUrlInput" required>
+                    
+                    <label for="editTitleInput">タイトル:</label>
+                    <input type="text" id="editTitleInput">
+                    
+                    <label for="editTagsInput">タグ:</label>
+                    <input type="text" id="editTagsInput" placeholder="カンマ区切り">
+                    
+                    <label for="editDescriptionInput">説明・備考:</label>
+                    <textarea id="editDescriptionInput" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeEditModal()">キャンセル</button>
+                <button class="btn-save" onclick="saveEdit()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
 </body>
 </html>

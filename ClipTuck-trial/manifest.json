@@ -1,37 +1,37 @@
 {
   "manifest_version": 3,
-  "name": "ClipTuck 完全版",
-  "short_name": "ClipTuck Full",
-  "version": "1.0.0-full",
+  "name": "ClipTuck 体験版",
+  "short_name": "ClipTuck Trial",
+  "version": "1.0.0-trial-locked",
   "description": "気になったら、ひとまずタック。後で読むを最短に。",
   "icons": [
     {
-      "src": "../shared/icons/appicon_16.png",
+      "src": "icons/appicon_16.png",
       "sizes": "16x16",
       "type": "image/png"
     },
     {
-      "src": "../shared/icons/appicon_32.png",
+      "src": "icons/appicon_32.png",
       "sizes": "32x32",
       "type": "image/png"
     },
     {
-      "src": "../shared/icons/appicon_48.png",
+      "src": "icons/appicon_48.png",
       "sizes": "48x48",
       "type": "image/png"
     },
     {
-      "src": "../shared/icons/appicon_128.png",
+      "src": "icons/appicon_128.png",
       "sizes": "128x128",
       "type": "image/png"
     },
     {
-      "src": "../shared/icons/appicon_192.png",
+      "src": "icons/appicon_192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "../shared/icons/appicon_512.png",
+      "src": "icons/appicon_512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
@@ -39,9 +39,9 @@
   "action": {
     "default_title": "ClipTuck",
     "default_icon": {
-      "16": "../shared/icons/appicon_16.png",
-      "32": "../shared/icons/appicon_32.png",
-      "48": "../shared/icons/appicon_48.png"
+      "16": "icons/appicon_16.png",
+      "32": "icons/appicon_32.png",
+      "48": "icons/appicon_48.png"
     }
   },
   "start_url": "/",

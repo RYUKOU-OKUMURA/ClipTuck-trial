@@ -811,6 +811,7 @@ function renderSingleBookmark(bookmark) {
     const descriptionHtml = description ? `<div class="bookmark-description">${escapeHtml(description)}</div>` : '';
     const isSelected = selectedBookmarks.has(bookmark.id);
     
+    const urlEncoded = encodeURIComponent(bookmark.url);
     return `
         <div class="bookmark-item ${isSelected ? 'selected' : ''}" data-id="${bookmark.id}">
             <div class="bookmark-selector">
@@ -819,7 +820,7 @@ function renderSingleBookmark(bookmark) {
                 <label for="select-${bookmark.id}"></label>
             </div>
             <div class="bookmark-content" onclick="toggleBookmarkSelection('${bookmark.id}')">
-                <h3 class="bookmark-title" onclick="event.stopPropagation(); openUrl('${bookmark.url}')">${escapeHtml(bookmark.title)}</h3>
+                <h3 class="bookmark-title" onclick="event.stopPropagation(); openUrl('${urlEncoded}')">${escapeHtml(bookmark.title)}</h3>
                 <div class="bookmark-meta">
                     <span class="bookmark-domain">${escapeHtml(domain)}</span>
                     <span class="bookmark-date">${formattedDate}</span>
@@ -876,9 +877,22 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
-// URL を新規タブで開く
+// URL を新規タブで開く（安全版）
 function openUrl(url) {
-    window.open(url, '_blank');
+    try {
+        if (typeof url !== 'string') return;
+        const decoded = url.includes('%') ? decodeURIComponent(url) : url;
+        // http/https のみ許可
+        const u = new URL(decoded);
+        if (u.protocol !== 'http:' && u.protocol !== 'https:') return;
+        // 逆タブナビング対策：noopener,noreferrer を付ける
+        const win = window.open(u.toString(), '_blank', 'noopener,noreferrer');
+        if (win) {
+            win.opener = null;
+        }
+    } catch (e) {
+        console.warn('openUrl validation failed:', e);
+    }
 }
 
 // アーカイブ切替
@@ -1155,42 +1169,124 @@ function exportData() {
     }
 }
 
-// データインポート
+// データインポート（安全化）
 function importData() {
     const file = document.getElementById('importFile').files[0];
     if (!file) return;
-    
+
+    // 1MB を超える巨大ファイルは拒否
+    const MAX_FILE_SIZE = 1024 * 1024;
+    if (file.size > MAX_FILE_SIZE) {
+        showToast('ファイルサイズが大きすぎます（最大1MB）', 'error');
+        return;
+    }
+
     const reader = new FileReader();
     reader.onload = function(e) {
         try {
             const importedData = JSON.parse(e.target.result);
-            
+
             // データ構造の検証
-            if (!importedData.bookmarks || !Array.isArray(importedData.bookmarks)) {
+            if (!importedData || !importedData.bookmarks || !Array.isArray(importedData.bookmarks)) {
                 throw new Error('無効なファイル形式です');
             }
-            
-            // マージ処理（IDの重複は既存優先）
+
+            // アイテムごとのバリデーション/サニタイズ
+            const sanitizeText = (txt, max = 200) => {
+                if (typeof txt !== 'string') return '';
+                return txt.slice(0, max);
+            };
+            const sanitizeDescription = (txt) => sanitizeText(txt, 1000);
+
+            const nowIso = new Date().toISOString();
+            const cleaned = [];
+            for (const raw of importedData.bookmarks) {
+                if (!raw || typeof raw !== 'object') continue;
+                const id = sanitizeText(raw.id || '', 100);
+                const title = sanitizeText(raw.title || '', 200);
+                const description = sanitizeDescription(raw.description || '');
+
+                // URL 検証（http/https のみ）
+                let url = '';
+                try {
+                    const candidate = typeof raw.url === 'string' ? raw.url : '';
+                    const decoded = candidate.includes('%') ? decodeURIComponent(candidate) : candidate;
+                    const u = new URL(decoded);
+                    if (u.protocol === 'http:' || u.protocol === 'https:') {
+                        url = u.toString();
+                    }
+                } catch (_) {
+                    // skip invalid url
+                }
+                if (!url) continue;
+
+                // タグ配列の検証
+                let tags = [];
+                if (Array.isArray(raw.tags)) {
+                    tags = raw.tags
+                        .filter(t => typeof t === 'string')
+                        .map(t => t.trim())
+                        .filter(t => t.length > 0)
+                        .slice(0, 50) // タグ数の上限
+                        .map(t => t.slice(0, 50)); // 各タグ長の上限
+                }
+
+                // createdAt の検証
+                let createdAt = nowIso;
+                if (raw.createdAt && !isNaN(Date.parse(raw.createdAt))) {
+                    createdAt = new Date(raw.createdAt).toISOString();
+                }
+
+                cleaned.push({
+                    id: id || (Date.now().toString(36) + Math.random().toString(36).substr(2)),
+                    url,
+                    title: title || (new URL(url)).hostname,
+                    tags,
+                    description,
+                    createdAt,
+                    archived: !!raw.archived
+                });
+            }
+
+            if (cleaned.length === 0) {
+                showToast('取り込めるブックマークがありませんでした', 'info');
+                return;
+            }
+
+            // マージ処理（IDの重複は既存優先）+ 上限順守
             const existingIds = new Set(appState.bookmarks.map(b => b.id));
-            const newBookmarks = importedData.bookmarks.filter(b => !existingIds.has(b.id));
-            
-            appState.bookmarks.push(...newBookmarks);
-            
+            const uniqueNew = cleaned.filter(b => !existingIds.has(b.id));
+
+            // 体験版の上限を超えないように調整
+            const remaining = Math.max(0, MAX_BOOKMARKS - appState.bookmarks.length);
+            const toAdd = uniqueNew.slice(0, remaining);
+
+            if (toAdd.length === 0) {
+                showToast('体験版の上限に達しているため、インポートできません', 'error');
+                return;
+            }
+
+            appState.bookmarks.push(...toAdd);
+
             // 日付でソート
             appState.bookmarks.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            
+
             saveData();
             renderBookmarks();
             updateAllFilters();
             updateStatus();
-            
-            showToast(`${newBookmarks.length}件のブックマークをインポートしました`, 'success');
+
+            const skipped = uniqueNew.length - toAdd.length;
+            const msg = skipped > 0
+                ? `${toAdd.length}件をインポートしました（${skipped}件は上限のためスキップ）`
+                : `${toAdd.length}件のブックマークをインポートしました`;
+            showToast(msg, 'success');
         } catch (error) {
             handleError(error, 'インポートに失敗しました: ' + error.message);
         }
     };
     reader.readAsText(file);
-    
+
     // ファイル選択をクリア
     document.getElementById('importFile').value = '';
 }

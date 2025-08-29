@@ -744,27 +744,6 @@ body {
     text-shadow: 1px 1px 2px rgba(93, 78, 55, 0.5);
 }
 
-/* ヘルプボタン */
-.smart-btn.help-button {
-    background: linear-gradient(135deg, #6B9FCC 0%, #5A8AB8 100%);
-    color: var(--paper-bg);
-    border: 3px solid #3F6B9A;
-    font-weight: 700;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    box-shadow:
-        0 4px 8px rgba(63, 107, 154, 0.4),
-        inset 0 2px 0 rgba(255, 255, 255, 0.3),
-        inset 0 -2px 0 rgba(0, 0, 0, 0.1);
-}
-
-.smart-btn.help-button:hover {
-    background: linear-gradient(135deg, #6B9FCC 0%, #5A8AB8 100%);
-    border-color: #5A8AB8;
-    transform: translateY(-2px);
-    box-shadow:
-        0 4px 8px rgba(63, 107, 154, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
 
 /* 選択ボタン（青色） */
 .smart-btn.select-btn {
@@ -1285,6 +1264,9 @@ body {
     position: fixed;
     bottom: 30px;
     right: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -1294,6 +1276,7 @@ body {
     font-size: 24px;
     font-weight: 700;
     cursor: pointer;
+    text-decoration: none;
     box-shadow: 
         0 6px 16px rgba(93, 78, 55, 0.3),
         inset 0 2px 0 rgba(248, 243, 231, 0.3);
@@ -1827,49 +1810,6 @@ select:disabled {
         inset 0 -1px 0 rgba(0, 0, 0, 0.1);
 }
 
-/* ヘルプモーダル専用スタイル */
-.help-content {
-    line-height: 1.6;
-}
-
-.help-content h4 {
-    margin: 20px 0 10px 0;
-    color: var(--primary-color);
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.help-content h4:first-child {
-    margin-top: 0;
-}
-
-.help-content ul {
-    margin: 10px 0;
-    padding-left: 20px;
-}
-
-.help-content li {
-    margin: 8px 0;
-}
-
-.help-content strong {
-    color: var(--text-color);
-    font-weight: 600;
-}
-
-.help-content kbd {
-    background: var(--medium-gray);
-    border: 1px solid var(--border-color);
-    border-radius: 3px;
-    padding: 2px 6px;
-    font-size: 12px;
-    font-family: monospace;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-}
-
-.help-content p {
-    margin: 10px 0;
-}
 
 /* モーダルのレスポンシブ対応 */
 @media (max-width: 768px) {
@@ -1882,13 +1822,5 @@ select:disabled {
     .modal-body,
     .modal-footer {
         padding: 15px;
-    }
-    
-    .help-content h4 {
-        font-size: 15px;
-    }
-    
-    .help-content ul {
-        padding-left: 16px;
     }
 }

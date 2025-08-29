@@ -1328,26 +1328,12 @@ function closeEditModal() {
     currentEditingId = null;
 }
 
-// ヘルプモーダルを表示
-function showHelpModal() {
-    document.getElementById('helpModal').style.display = 'flex';
-}
-
-// ヘルプモーダルを閉じる
-function closeHelpModal() {
-    document.getElementById('helpModal').style.display = 'none';
-}
-
 // モーダルの背景クリックで閉じる
 document.addEventListener('click', function(e) {
     const editModal = document.getElementById('editModal');
-    const helpModal = document.getElementById('helpModal');
     
     if (e.target === editModal) {
         closeEditModal();
-    }
-    if (e.target === helpModal) {
-        closeHelpModal();
     }
 });
 
@@ -1403,8 +1389,6 @@ document.addEventListener('keydown', function(e) {
         if (document.getElementById('editModal').style.display === 'flex') {
             closeEditModal();
         }
-        if (document.getElementById('helpModal').style.display === 'flex') {
-            closeHelpModal();
-        }
+        // ヘルプモーダルは外部リンク化のため廃止
     }
 });

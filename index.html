@@ -131,52 +131,13 @@
 
     <div class="toast" id="toast"></div>
 
-    <!-- フローティングヘルプボタン -->
-    <button onclick="showHelpModal()" class="floating-help-btn" data-tooltip="使い方・機能説明を表示">❓</button>
-
-    <!-- ヘルプモーダル -->
-    <div class="modal" id="helpModal" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>❓ ClipTuck の使い方</h3>
-                <button class="close-btn" onclick="closeHelpModal()">×</button>
-            </div>
-            <div class="modal-body">
-                <div class="help-content">
-                    <h4>📚 基本的な使い方</h4>
-                    <ul>
-                        <li><strong>ブックマーク保存:</strong> URL、タイトル、タグ、説明を入力して「保存」をクリック</li>
-                        <li><strong>検索:</strong> 検索欄にキーワードを入力してリアルタイム検索</li>
-                        <li><strong>フィルタ:</strong> タグ、ドメイン、期間でブックマークを絞り込み</li>
-                        <li><strong>アーカイブ:</strong> 📁ボタンでアーカイブ、📂ボタンでアンアーカイブ</li>
-                    </ul>
-                    
-                    <h4>🔖 ブックマークレット</h4>
-                    <p>「ブックマークレット」ボタンをクリックして表示されるボタンをブラウザのブックマークバーにドラッグ。任意のページで実行すると自動的にClipTuckに保存されます。</p>
-                    
-                    <h4>⚡ キーボードショートカット</h4>
-                    <ul>
-                        <li><kbd>Ctrl+S</kbd> / <kbd>Cmd+S</kbd>: ブックマーク保存</li>
-                        <li><kbd>Esc</kbd>: モーダル・ブックマークレット画面を閉じる</li>
-                    </ul>
-                    
-                    <h4>📊 データ管理</h4>
-                    <ul>
-                        <li><strong>エクスポート:</strong> すべてのデータをJSONファイルでバックアップ</li>
-                        <li><strong>インポート:</strong> JSONファイルから既存データに追加（重複は上書きされません）</li>
-                        <li><strong>グループ表示:</strong> ドメイン別・日付別でブックマークを整理</li>
-                        <li><strong>⚠️ 体験版制限:</strong> ブックマーク保存は最大50件まで（完全版はほぼ無制限）</li>
-                    </ul>
-                    
-                    <h4>🎯 選択機能</h4>
-                    <p>チェックボックスで複数のブックマークを選択し、一括削除が可能です。「全選択」「全解除」ボタンで効率的に操作できます。</p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-cancel" onclick="closeHelpModal()">閉じる</button>
-            </div>
-        </div>
-    </div>
+    <!-- フローティングヘルプボタン（外部リンク） -->
+    <a href="https://note.com/redcord/n/n394272c3c8e4"
+       class="floating-help-btn"
+       target="_blank"
+       rel="noopener noreferrer"
+       aria-label="ヘルプ（Note記事を開く）"
+       data-tooltip="使い方・機能説明（外部サイト）">❓</a>
 
     <!-- 編集モーダル -->
     <div class="modal" id="editModal" style="display: none;">
